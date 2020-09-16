@@ -8,6 +8,15 @@
     const express = require('express');
     const app = express(); 
 
+    // Allow compression of HTTP responses, which helps with load time
+    var compression = require('compression');
+    app.use(compression());
+
+    // Force HTTP headers to be set in a way which protects the app from potential web vulnerabilities
+    var helmet = require('helmet');
+    app.use(helmet());
+
+
     // Handle POST requests
     const bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({
@@ -16,9 +25,6 @@
 
     // Allow usage of JSON
     app.use(bodyParser.json());
-    
-    // Define the 'public' folder as static - contains all static HTML, CSS and JS files
-    app.use(express.static('public'));
 
     // Enable Cross-Origin Resource Sharing (CORS) 
     var cors = require('cors');
@@ -33,6 +39,7 @@
     
         next();
     });
+
 
 /** Start server on specified port ***************/
     const port = process.env.PORT || 3030;
